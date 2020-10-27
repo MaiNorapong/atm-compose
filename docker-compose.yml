@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  atm:
+    build: atm-web/.
+    ports:
+      - "8090:8090"
+    networks:
+      - backend
+    depends_on:
+      - db
+    command: ["./wait-for-it.sh", "db:3306", "--", "mvn", "exec:java", "-Dexec.mainClass=th.ac.ku.atm.AtmApplication"]
+  db:
+    build: .
+    ports:
+      - "3307:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - backend
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+  bank:
+    build: bankaccount-api/.
+    ports:
+        - "8091:8091"
+    networks:
+        - backend
+    depends_on:
+        - db
+    command: ["./wait-for-it.sh", "db:3306", "--", "mvn", "exec:java", "-Dexec.mainClass=th.ac.ku.bankaccount.BankaccountApplication"]
+networks:
+  backend:
+    driver: bridge
