@@ -1,0 +1,6 @@
+[submodule "atm-web"]
+	path = atm-web
+	url = https://github.com/MaiNorapong/atm-web.git
+[submodule "bankaccount-api"]
+	path = bankaccount-api
+	url = https://github.com/MaiNorapong/bankaccount-api
